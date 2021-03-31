@@ -52,7 +52,6 @@ class DetoxSessionManager {
     }
 
     this._sessionsByConnection.set(connection, session);
-    session[role] = connection;
     return session;
   }
 

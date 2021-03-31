@@ -36,7 +36,15 @@ class DetoxConnection {
         get log() { return log; },
         appendLogDetails: (details) => { this._log = this._log.child(details); },
 
-        registerSession: (params) => this._sessionManager.registerSession(this, params),
+        registerSession: (params) => {
+          const session = this._sessionManager.registerSession(this, params);
+          return {
+            session,
+            notifyTheOtherRole: () => {
+              session[params.role] = this;
+            },
+          };
+        },
         setHandler: (handler) => { this._handler = handler; },
         sendAction: (action) => this.sendAction(action),
       },

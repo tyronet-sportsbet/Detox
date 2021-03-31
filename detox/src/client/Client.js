@@ -5,6 +5,7 @@ const AsyncWebSocket = require('./AsyncWebSocket');
 const actions = require('./actions/actions');
 const Deferred = require('../utils/Deferred');
 const DetoxInvariantError = require('../errors/DetoxInvariantError');
+const DetoxRuntimeError = require('../errors/DetoxRuntimeError');
 const log = require('../utils/logger').child({ __filename });
 const { asError, createErrorWithUserStack, replaceErrorStack } = require('../utils/errorUtils');
 
@@ -284,7 +285,7 @@ class Client {
   _onAppDisconnected() {
     this._whenAppIsConnected = new Deferred();
     this._whenAppIsReady = new Deferred();
-    this._asyncWebSocket.rejectAll(new Error('The app has unexpectedly disconnected from Detox server'));
+    this._asyncWebSocket.rejectAll(new DetoxRuntimeError('The app has unexpectedly disconnected from Detox server'));
   }
 
   _onUnhandledServerError(message) {

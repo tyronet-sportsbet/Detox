@@ -55,7 +55,8 @@ class AnonymousConnectionHandler {
       });
     }
 
-    const session = this._api.registerSession(action.params);
+    const { session, notifyTheOtherRole } = this._api.registerSession(action.params);
+
     const Handler = action.params.role === 'app' ? AppConnectionHandler : TesterConnectionHandler;
     this._api.setHandler(new Handler({
       api: this._api,
@@ -70,6 +71,8 @@ class AnonymousConnectionHandler {
         appConnected: !!session.app,
       },
     });
+
+    notifyTheOtherRole();
   }
 
   _handleUnknownAction(action) {
